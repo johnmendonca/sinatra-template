@@ -8,6 +8,11 @@ require 'dm-timestamps'
 
 require 'lib/models/profile'
 
+configure do
+  #needed so views are found using webrat
+  set :views, "#{File.dirname(__FILE__)}/views"
+end
+
 configure :development do
   DataMapper.setup(:default, "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/development.db")
 end

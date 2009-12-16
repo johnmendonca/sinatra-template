@@ -1,21 +1,46 @@
 = Sinatra Application Template
 
-A base Sinatra application template. Just fork and build. Yay!
-Includes DataMapper, RSpec, and Haml, all ready to go.
-
-== Configuration
-
-Dependencies and all configuration is done in <tt>application.rb</tt>. Your database is also set up here. DataMapper will use sqlite3 by default. Tests use the sqlite3-memory adapter (no configuration needed).
-
-Add your controller actions in <tt>application.rb</tt>. Views for these actions are placed in the <tt>views</tt> directory. Static files, including a stock stylesheet, go in the <tt>public</tt> directory. Models go in the <tt>lib</tt> directory and are auto-loaded. 
-
-== Testing
-
-Add your specs in <tt>spec</tt>; just require <tt>spec_helper.rb</tt> to pre-configure the test environment. A number of samples are provided (including a sample model, which can be removed). To run the specs:
-
-  rake spec
+A base Sinatra application template, just fork and build.
+It uses DataMapper and Haml by default, and includes RSpec, Cucumber, and Webrat for testing.
 
 == Getting Started
 
   rake db:migrate
   ruby application.rb
+
+== Configuration
+
+Application requirements and configuration are found in <tt>application.rb</tt>.
+
+Add your Sinatra routes to <tt>application.rb</tt>. 
+
+== Database
+
+This project uses DataMapper and sqlite3 by default.  This is configured in <tt>application.rb</tt>:
+
+  configure :development do
+    DataMapper.setup(:default, 'sqlite3:///' + File.expand_path(File.dirname(__FILE__)) + '/development.db')
+  end
+
+There is also a small sample model in <tt>lib/models/profile.rb</tt>, as well as rake tasks to migrate and upgrade the database.
+
+== Views
+
+View templates are found by default in <tt>/views</tt>, and static files in <tt>/public</tt>.  You can overwrite these by adding the following to <tt>application.rb</tt>:
+
+  set :views, File.dirname(__FILE__) + '/foo'
+  set :public, File.dirname(__FILE__) + '/bar'
+
+== Testing
+
+The general test environment is setup in <tt>spec/spec_helper.rb</tt>.  
+Add your specs to <tt>spec</tt>, and require <tt>spec_helper.rb</tt>.
+A couple example specs are provided. To run them:
+
+  rake spec
+
+Cucumber specific setup is done in <tt>features/support/env.rb</tt> (which includes <tt>spec_helper</tt>).  To execute all cucumber features:
+
+  rake cucumber
+
+Read more here: http://wiki.github.com/aslakhellesoy/cucumber/sinatra
